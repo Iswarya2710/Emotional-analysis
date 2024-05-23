@@ -1,0 +1,106 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speech Emotion Recognition</title>
+  </head>
+  <body>
+    <h1>Real-time Speech Emotion Recognition</h1>
+    <button id="startButton" onclick="startRecording()">Start Recording</button>
+    <button id="stopButton" onclick="stopRecording()" disabled>
+      Stop Recording
+    </button>
+    <button id="playButton" onclick="playRecordedVoice()" disabled>
+      Play Recorded Voice
+    </button>
+    <button id="predictButton" onclick="predictEmotion()" disabled>
+      Predict Emotion
+    </button>
+    <p id="emotionResult">Emotion:</p>
+
+    <script>
+      let audioChunks = [];
+      let isRecording = false;
+
+      const startRecording = () => {
+        isRecording = true;
+        audioChunks = [];
+
+        document.getElementById("startButton").disabled = true;
+        document.getElementById("stopButton").disabled = false;
+        document.getElementById("playButton").disabled = true;
+        document.getElementById("predictButton").disabled = true;
+
+        navigator.mediaDevices
+          .getUserMedia({ audio: true })
+          .then((stream) => {
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = (event) => {
+              if (event.data.size > 0) {
+                audioChunks.push(event.data);
+              }
+            };
+
+            mediaRecorder.onstop = () => {
+              if (isRecording) {
+                document.getElementById("playButton").disabled = false;
+                document.getElementById("predictButton").disabled = false;
+              }
+            };
+
+            mediaRecorder.start();
+            setTimeout(() => {
+              if (isRecording) {
+                mediaRecorder.stop();
+                document.getElementById("startButton").disabled = false;
+                document.getElementById("stopButton").disabled = true;
+              }
+            }, 5000); // Record for 5 seconds (adjust as needed)
+          })
+          .catch((error) => {
+            console.error("Error accessing microphone:", error);
+          });
+      };
+
+      const stopRecording = () => {
+        isRecording = false;
+      };
+
+      const playRecordedVoice = () => {
+        fetch("/get_recorded_voice")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.voice) {
+              const audio = new Audio(`data:audio/wav;base64,${data.voice}`);
+              audio.play();
+            } else {
+              console.error("No recorded voice found");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching recorded voice:", error);
+          });
+      };
+
+      const predictEmotion = () => {
+        if (!isRecording) {
+          fetch("/realtime_predict")
+            .then((response) => response.json())
+            .then((data) => {
+              document.getElementById("emotionResult").innerText =
+                "Emotion: " + data.emotion;
+            })
+            .catch((error) => {
+              console.error("Error fetching real-time prediction:", error);
+            });
+        } else {
+          console.log(
+            "Recording is still in progress. Stop recording before predicting."
+          );
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Feedback</title>
+    <style>
+      body {
+        background: url("/static/pexels-eberhard-grossgasteiger-1287075.jpg")
+          no-repeat;
+        background-size: cover;
+        text-align: center;
+        margin-top: 250px;
+        margin-bottom: 50px;
+      }
+    </style>
+    <script>
+      document
+        .getElementById("feedbackForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          // Here you can add code to handle form submission, like AJAX request, etc.
+          alert("Feedback submitted successfully!");
+          window.location.href = "dash.html";
+        });
+    </script>
+  </head>
+  <body>
+    <form action="{{ url_for('feedback')}}" method="post">
+      <label for="name">Name:</label><br />
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        position="center"
+      /><br />
+
+      <label for="email">Email:</label><br />
+      <input type="email" id="email" name="email" required /><br />
+
+      <label for="subject">Subject:</label><br />
+      <input type="text" id="subject" name="subject" /><br />
+
+      <label for="message">Message:</label><br />
+      <textarea
+        id="message"
+        name="message"
+        rows="4"
+        cols="50"
+        required
+      ></textarea
+      ><br />
+
+      <input type="submit" value="Submit" />
+      <button><a href="{{ url_for('dash') }}">Back To Dashboard</label></button>
+    </form>
+  </body>
+</html>

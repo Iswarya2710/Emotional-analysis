@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <title>About</title>
+  <head>
+    <h1>About</h1>
+    <style>
+      body {
+        background: url("/static/pexels-eberhard-grossgasteiger-1287075.jpg")
+          no-repeat;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Project Overview</h2>
+    <p>
+      Our web application enables precise deep learning-based classification of
+      human emotions from video information, giving users an intuitive platform
+      to investigate and compare cutting-edge affective computing models.
+    </p>
+    <h2>Problem Statement</h2>
+    <p>
+      This study uses many modalities, including visual, aural, and textual
+      signals, to leverage deep learning to reliably characterize human emotions
+      in dynamic video recordings.
+    </p>
+    <h2>Objective</h2>
+    <p>
+      The aim of this project is to create an intuitive web application that
+      facilitates multimodal emotion recognition in video footage. Users will be
+      able to upload movies, view the results of emotion recognition, and
+      compare deep learning models with one another.
+    </p>
+    <h2>Feature</h2>
+    <p>
+      Our web application makes it easier to explore and assess deep learning
+      models for multimodal emotion analysis in video content by letting users
+      submit films and view the results of emotion detection.
+    </p>
+    <h2>Technology</h2>
+    <p>
+      Python is the main programming language used in this project, and Flask or
+      Django is the web framework used for backend development. TensorFlow,
+      PyTorch, or Keras are utilized in the implementation of deep learning
+      models for multimodal emotion recognition. OpenCV is used for processing
+      videos, and NoSQL or SQL databases are used for storing data. Version
+      control is further facilitated with Git, and the web application is hosted
+      for user access on Heroku or AWS.
+    </p>
+    <button><a href="{{ url_for('dash') }}">Back To Dashboard</label></button>
+  </body>
+</html>

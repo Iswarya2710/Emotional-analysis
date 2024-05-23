@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Face Detection</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      body {
+        background: url("/static/pexels-eberhard-grossgasteiger-1287075.jpg");
+        background-size: cover;
+      }
+      button{
+      background-color:white;
+      color:black;
+      }
+      br {
+        startCamera {
+          position: relative;
+          top: 200px;
+          bottom: 50px;
+          align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Face Detection</h1>
+    <img id="video_feed" src="" width="730" height="480" />
+    <img id="video_feed2" src="" width="730" height="480" />
+    <button onclick="startCamera()">Emotion</button>
+    <button onclick="startCamera2()">Gender</button>
+    <button onclick="stopCamera()">Stop Camera</button>
+    <button id="getTextBtn">Audio</button>
+    <div id="textContainer"></div>
+    <button><a href="{{ url_for('dash') }}">Back To Dashboard</a></button>
+    <script>
+      let videoElement;
+
+      function startCamera() {
+        videoElement = document.getElementById("video_feed");
+        videoElement.src = "/video_feed";
+      }
+      function startCamera2() {
+        videoElement = document.getElementById("video_feed2");
+        videoElement.src = "/video_feed2";
+      }
+      function stopCamera() {
+        videoElement.src = "";
+      }
+              $(document).ready(function() {
+            $('#getTextBtn').click(function() {
+                $.ajax({
+                    url: '/get_text',
+                    type: 'POST',
+                    success: function(response) {
+                        $('#textContainer').text(response.text);
+                    }
+                });
+            });
+        });
+    </script>
+  </body>
+</html>
